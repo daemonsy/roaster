@@ -1,0 +1,25 @@
+{
+  "name": "roasted_cashew",
+  "version": "0.0.1",
+  "description": "A simple micro service that exposes wkhtmltopdf",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pdf",
+    "rendering"
+  ],
+  "author": "Damon Aw",
+  "license": "ISC",
+  "dependencies": {
+    "blob-stream": "^0.1.2",
+    "body-parser": "^1.9.2",
+    "cors": "^2.5.0",
+    "express": "^4.10.0",
+    "morgan": "^1.4.1",
+    "sanitize-html": "^1.4.3",
+    "socket.io": "^1.2.0",
+    "wkhtmltopdf": "^0.1.5"
+  }
+}
