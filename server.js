@@ -25,7 +25,10 @@ app.post('/convert', function(request, response) {
   var form = new multiparty.Form();
   form.parse(request, function(error, fields, files) {
     var fileUUID = uuid.v4();
-    if(!files.document || !file.documents.length) { response.end("No Document") };
+    if(!files.document || !file.documents.length) {
+      response.sendStatus(422);
+      response.end("No Document");
+    };
     var document = files.document[0];
 
     var uniquePath = path.join(tmpFolder, fileUUID);
@@ -34,11 +37,15 @@ app.post('/convert', function(request, response) {
     var docPath = uniquePath + ".tmp";
 
     exec(libreBinaryLocation + " --headless --convert-to pdf " +  docPath + " --outdir " + tmpFolder, function(error) {
-      if (error) throw error;
+      if (error)  {
+        response.sendStatus(422);
+        response.end("Error during Conversion");
+      }
+
       var pdfFileName = uniquePath + ".pdf";
 
       fs.readFile(pdfFileName, function (error, data) {
-        if (error) throw error;
+        if (error) { response.sendStatus(422); }
 
         response.setHeader('Content-disposition', 'attachment; filename="' + pdfFileName + '"');
         response.setHeader('Content-type', 'application/pdf');
