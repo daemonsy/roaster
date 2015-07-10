@@ -25,15 +25,24 @@ app.post('/convert', function(request, response) {
   var form = new multiparty.Form();
   form.parse(request, function(error, fields, files) {
     var fileUUID = uuid.v4();
+    if(!files.document.length) { response.end("No Document") };
     var document = files.document[0];
-    var outputFileName = path.join(tmpFolder, fileUUID);
-    shell.mv(document.path, outputFileName + ".tmp");
 
-    exec(libreBinaryLocation + " --headless --convert-to pdf " + outputFileName + ".tmp" + " --outdir " + tmpFolder, function(error, output) {
+    var uniquePath = path.join(tmpFolder, fileUUID);
+
+    shell.mv(document.path, uniquePath + ".tmp");
+    var docPath = uniquePath + ".tmp";
+
+    exec(libreBinaryLocation + " --headless --convert-to pdf " +  docPath + " --outdir " + tmpFolder, function(error) {
       if (error) throw error;
-      fs.readFile(outputFileName + ".pdf", function (error, data) {
+      var pdfFileName = uniquePath + ".pdf";
+
+      fs.readFile(pdfFileName, function (error, data) {
         if (error) throw error;
+
+        response.setHeader('Content-disposition', 'attachment; filename="' + pdfFileName + '"');
         response.setHeader('Content-type', 'application/pdf');
+
         response.end(data);
       });
     });
