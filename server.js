@@ -49,4 +49,6 @@ app.post('/convert', function(request, response) {
   });
 });
 
-app.listen(port);
+app.listen(port, function() {
+  console.log("Roasting cashews on port", port);
+});
