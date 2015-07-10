@@ -44,6 +44,8 @@ app.post('/convert', function(request, response) {
         response.setHeader('Content-type', 'application/pdf');
 
         response.end(data);
+
+        shell.rm(pdfFileName);
       });
     });
   });
