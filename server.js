@@ -25,7 +25,7 @@ app.post('/convert', function(request, response) {
   var form = new multiparty.Form();
   form.parse(request, function(error, fields, files) {
     var fileUUID = uuid.v4();
-    if(!files.document || !file.documents.length) {
+    if(!files.document || !files.document.length) {
       response.sendStatus(422);
       response.end("No Document");
     };
