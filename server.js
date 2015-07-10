@@ -30,7 +30,7 @@ app.post('/convert', function(request, response) {
 
     var uniquePath = path.join(tmpFolder, fileUUID);
 
-    shell.mv(document.path, uniquePath + ".tmp");
+    shell.cp(document.path, uniquePath + ".tmp");
     var docPath = uniquePath + ".tmp";
 
     exec(libreBinaryLocation + " --headless --convert-to pdf " +  docPath + " --outdir " + tmpFolder, function(error) {
