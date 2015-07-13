@@ -25,7 +25,7 @@ app.post('/convert', function(request, response) {
   var form = new multiparty.Form();
   form.parse(request, function(error, fields, files) {
     var fileUUID = uuid.v4();
-    if(!files.document || !files.document.length) {
+    if(files && !files.document || !files.document.length) {
       response.sendStatus(422);
       response.end("No Document");
     };
@@ -43,17 +43,7 @@ app.post('/convert', function(request, response) {
       }
 
       var pdfFileName = uniquePath + ".pdf";
-
-      fs.readFile(pdfFileName, function (error, data) {
-        if (error) { response.sendStatus(422); }
-
-        response.setHeader('Content-disposition', 'attachment; filename="' + pdfFileName + '"');
-        response.setHeader('Content-type', 'application/pdf');
-
-        response.end(data);
-
-        shell.rm(pdfFileName);
-      });
+      response.sendFile(pdfFileName);
     });
   });
 });
